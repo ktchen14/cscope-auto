@@ -21,7 +21,7 @@ function! cscope_auto#locate_database(path)
 endfunction
 
 function! cscope_auto#id_list()
-  return map(split(execute('cscope show'), '\n')[1:], "str2nr(matchstr(v:val, '\d\+'))")
+  return map(split(execute('cs show'), '\n')[1:], "+matchstr(v:val, '\d\+')")
 endfunction
 
 function! cscope_auto#switch_buffer(number)

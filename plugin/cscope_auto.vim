@@ -6,7 +6,7 @@ endif
 let g:loaded_cscope_auto = 1
 
 autocmd VimEnter * call cscope_auto#switch_buffer(bufnr('%'))
-autocmd BufEnter * call cscope_auto#switch_buffer(str2nr(expand('<abuf>')))
+autocmd BufEnter * call cscope_auto#switch_buffer(+expand('<abuf>'))
 
 if exists('##DirChanged')
   autocmd DirChanged * call cscope_auto#switch_buffer(bufnr('%'))
