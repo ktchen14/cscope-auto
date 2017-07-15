@@ -20,6 +20,19 @@ function! cscope_auto#locate_database(path)
   return ''
 endfunction
 
+" Use the correct scope (window, tab, or global) to cd into path. Whether each
+" window or tab has a local directory should be unchanged.
+function! cscope_auto#cd(path)
+  let path = fnameescape(a:path)
+  if haslocaldir()
+    execute 'lcd ' . path
+  elseif exists(':tcd') && haslocaldir(-1)
+    execute 'tcd ' . path
+  else
+    execute 'cd ' . path
+  endif
+endfunction
+
 function! cscope_auto#id_list()
   return map(split(execute('cs show'), '\n')[1:], "+matchstr(v:val, '\d\+')")
 endfunction
