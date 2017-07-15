@@ -61,8 +61,10 @@ function! cscope_auto#switch_buffer(number)
 
   if empty(database) | return | endif
 
+  let prefix = fnamemodify(database, ':h')
+
   let before = cscope_auto#id_list()
-  execute 'cscope add ' . fnameescape(database)
+  execute 'cscope add ' . fnameescape(database) . ' ' . fnameescape(prefix)
   let result = cscope_auto#id_list()
   call filter(result, 'index(before, v:val) == -1')
   let g:cscope_auto_id = result[0]
