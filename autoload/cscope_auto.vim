@@ -37,6 +37,35 @@ function! cscope_auto#id_list()
   return map(split(execute('cs show'), '\n')[1:], "+matchstr(v:val, '\d\+')")
 endfunction
 
+function! cscope_auto#remake(database, ignorecase)
+  if a:database ==# get(g:, 'cscope_auto_database', '') &&
+        \ a:ignorecase == get(g:, 'cscope_auto_ignorecase', a:ignorecase)
+    return
+  endif
+
+  if has_key(g:, 'cscope_auto_id')
+    " Use silent! in case this was killed by the user
+    silent! execute 'cscope kill ' . g:cscope_auto_id
+    unlet g:cscope_auto_id
+    unlet g:cscope_auto_database
+    unlet g:cscope_auto_ignorecase
+  endif
+
+  if empty(a:database) | return | endif
+
+  let prefix = fnamemodify(a:database, ':h')
+  let suffix = a:ignorecase ? ' -C' : ''
+
+  let before = cscope_auto#id_list()
+  execute 'cscope add ' . fnameescape(a:database) . ' ' . fnameescape(prefix) . suffix
+  let result = cscope_auto#id_list()
+  call filter(result, 'index(before, v:val) == -1')
+  let g:cscope_auto_id = result[0]
+
+  let g:cscope_auto_database = a:database
+  let g:cscope_auto_ignorecase = a:ignorecase
+endfunction
+
 function! cscope_auto#switch_buffer(number)
   let name = bufname(a:number)
 
@@ -47,27 +76,10 @@ function! cscope_auto#switch_buffer(number)
   endif
 
   let database = cscope_auto#locate_database(path)
+  return cscope_auto#remake(database, &ignorecase)
+endfunction
 
-  if database ==# get(g:, 'cscope_auto_database', '')
-    return
-  endif
-
-  if has_key(g:, 'cscope_auto_id')
-    " Use silent! in case this was killed by the user
-    silent! execute 'cscope kill ' . g:cscope_auto_id
-    unlet g:cscope_auto_id
-    unlet g:cscope_auto_database
-  endif
-
-  if empty(database) | return | endif
-
-  let prefix = fnamemodify(database, ':h')
-
-  let before = cscope_auto#id_list()
-  execute 'cscope add ' . fnameescape(database) . ' ' . fnameescape(prefix)
-  let result = cscope_auto#id_list()
-  call filter(result, 'index(before, v:val) == -1')
-  let g:cscope_auto_id = result[0]
-
-  let g:cscope_auto_database = database
+function! cscope_auto#switch_ignorecase()
+  let database = get(g:, 'cscope_auto_database', '')
+  return cscope_auto#remake(database, &ignorecase)
 endfunction

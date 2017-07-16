@@ -24,3 +24,5 @@ endif
 " file paths used in the quickfix window. Note that this has to happen before
 " the quickfix window is populated (before the BufReadPost quickfix).
 autocmd QuickFixCmdPost cscope call cscope_auto#cd('.')
+
+autocmd OptionSet ignorecase call cscope_auto#switch_ignorecase()
