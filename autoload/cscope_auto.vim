@@ -10,7 +10,7 @@ let s:dirsep = fnamemodify(getcwd(), ':p')[-1:]
 function! cscope_auto#locate_database(path)
   let path = fnamemodify(a:path, ':p:h')
 
-  while !has_key(l:, 'last') || path !=# last
+  while !exists('last') || path !=# last
     if filereadable(path . s:dirsep . s:database_name)
       return path . s:dirsep . s:database_name
     endif
@@ -43,7 +43,7 @@ function! cscope_auto#remake(database, ignorecase)
     return
   endif
 
-  if has_key(g:, 'cscope_auto_id')
+  if exists('g:cscope_auto_id')
     " Use silent! in case this was killed by the user
     silent! execute 'cscope kill ' . g:cscope_auto_id
     unlet g:cscope_auto_id
