@@ -11,8 +11,9 @@ function! cscope_auto#locate_database(path)
   let path = fnamemodify(a:path, ':p:h')
 
   while !exists('last') || path !=# last
-    if filereadable(path . s:dirsep . s:database_name)
-      return path . s:dirsep . s:database_name
+    let file = substitute(path, s:dirsep . '\?$', s:dirsep . s:database_name, '')
+    if filereadable(file)
+      return file
     endif
     let last = path
     let path = fnamemodify(path, ':h')
