@@ -26,11 +26,11 @@ endfunction
 function! cscope_auto#cd(path)
   let path = fnameescape(a:path)
   if haslocaldir()
-    execute 'lcd ' . path
+    execute 'lcd' path
   elseif exists(':tcd') && haslocaldir(-1)
-    execute 'tcd ' . path
+    execute 'tcd' path
   else
-    execute 'cd ' . path
+    execute 'cd' path
   endif
 endfunction
 
@@ -46,7 +46,7 @@ function! cscope_auto#remake(database, ignorecase)
 
   if exists('g:cscope_auto_id')
     " Use silent! in case this was killed by the user
-    silent! execute 'cscope kill ' . g:cscope_auto_id
+    silent! execute 'cscope kill' g:cscope_auto_id
     unlet g:cscope_auto_id
     unlet g:cscope_auto_database
     unlet g:cscope_auto_ignorecase
@@ -55,10 +55,10 @@ function! cscope_auto#remake(database, ignorecase)
   if empty(a:database) | return | endif
 
   let prefix = fnamemodify(a:database, ':h')
-  let suffix = a:ignorecase ? ' -C' : ''
+  let suffix = a:ignorecase ? '-C' : ''
 
   let before = cscope_auto#id_list()
-  execute 'cscope add ' . fnameescape(a:database) . ' ' . fnameescape(prefix) . suffix
+  execute 'cscope add' fnameescape(a:database) fnameescape(prefix) suffix
   let result = cscope_auto#id_list()
   call filter(result, 'index(before, v:val) == -1')
   let g:cscope_auto_id = result[0]
