@@ -39,7 +39,7 @@ function! cscope_auto#id_list()
   return map(split(execute('cs show'), '\n')[1:], "+matchstr(v:val, '\d\+')")
 endfunction
 
-function! cscope_auto#remake(database)
+function! cscope_auto#rewire(database)
   if exists('g:cscope_auto_id')
     " Use silent! in case this was killed by the user
     silent! execute 'cscope kill' g:cscope_auto_id
@@ -76,12 +76,12 @@ function! cscope_auto#switch_buffer(number)
   if database ==# get(g:, 'cscope_auto_database', '')
     return
   endif
-  call cscope_auto#remake(database)
+  call cscope_auto#rewire(database)
 endfunction
 
 function! cscope_auto#switch_ignorecase()
   if &ignorecase == get(g:, 'cscope_auto_ignorecase', &ignorecase)
     return
   endif
-  call cscope_auto#remake(get(g:, 'cscope_auto_database', ''))
+  call cscope_auto#rewire(get(g:, 'cscope_auto_database', ''))
 endfunction
