@@ -8,6 +8,10 @@ cscope database for the current buffer. If your cscope databases aren't named
 let g:cscope_auto_database_name = '.cscope'
 ```
 
+In addition cscope-auto automatically reestablishes the existing cscope
+connection when you change `&ignorecase` or when the cscope database has been
+updated.
+
 ## Installation
 
 Use your favorite plugin manager. Using [vim-plug](https://github.com/junegunn/vim-plug):
