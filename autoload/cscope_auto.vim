@@ -26,12 +26,13 @@ endfunction
 function! cscope_auto#cd(path)
   let path = fnameescape(a:path)
   if haslocaldir()
-    execute 'lcd' path
+    let cd = 'lcd'
   elseif exists(':tcd') && haslocaldir(-1)
-    execute 'tcd' path
+    let cd = 'tcd'
   else
-    execute 'cd' path
+    let cd = 'cd'
   endif
+  execute cd fnameescape(path)
 endfunction
 
 function! cscope_auto#id_list()
