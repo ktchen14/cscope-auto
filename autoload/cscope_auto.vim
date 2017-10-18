@@ -45,6 +45,7 @@ function! cscope_auto#rewire(database)
     silent! execute 'cscope kill' g:cscope_auto_id
     unlet g:cscope_auto_id
     unlet g:cscope_auto_database
+    unlet g:cscope_auto_time
     unlet g:cscope_auto_ignorecase
   endif
 
@@ -60,6 +61,7 @@ function! cscope_auto#rewire(database)
   let g:cscope_auto_id = result[0]
 
   let g:cscope_auto_database = a:database
+  let g:cscope_auto_time = getftime(a:database)
   let g:cscope_auto_ignorecase = &ignorecase
 endfunction
 
@@ -79,9 +81,18 @@ function! cscope_auto#switch_buffer(number)
   call cscope_auto#rewire(database)
 endfunction
 
-function! cscope_auto#switch_ignorecase()
-  if &ignorecase == get(g:, 'cscope_auto_ignorecase', &ignorecase)
+function! cscope_auto#retime()
+  if !exists('g:cscope_auto_id') | return | endif
+  if getftime(g:cscope_auto_database) <= g:cscope_auto_time
     return
   endif
-  call cscope_auto#rewire(get(g:, 'cscope_auto_database', ''))
+  call cscope_auto#rewire(g:cscope_auto_database)
+endfunction
+
+function! cscope_auto#switch_ignorecase()
+  if !exists('g:cscope_auto_id') | return | endif
+  if &ignorecase == g:cscope_auto_ignorecase
+    return
+  endif
+  call cscope_auto#rewire(g:cscope_auto_database)
 endfunction

@@ -12,6 +12,8 @@ if exists('##DirChanged')
   autocmd DirChanged * call cscope_auto#switch_buffer(bufnr('%'))
 endif
 
+autocmd QuickFixCmdPre cscope call cscope_auto#retime()
+
 " If the cscope database is added with an absolute prefix then any finds using
 " it return absolute file paths. When the quickfix list is populated an
 " unlisted buffer is created for each file with this absolute file path as the
