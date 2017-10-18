@@ -40,11 +40,6 @@ function! cscope_auto#id_list()
 endfunction
 
 function! cscope_auto#remake(database)
-  if a:database ==# get(g:, 'cscope_auto_database', '') &&
-        \ &ignorecase == get(g:, 'cscope_auto_ignorecase', &ignorecase)
-    return
-  endif
-
   if exists('g:cscope_auto_id')
     " Use silent! in case this was killed by the user
     silent! execute 'cscope kill' g:cscope_auto_id
@@ -78,10 +73,15 @@ function! cscope_auto#switch_buffer(number)
   endif
 
   let database = cscope_auto#locate_database(path)
-  return cscope_auto#remake(database)
+  if database ==# get(g:, 'cscope_auto_database', '')
+    return
+  endif
+  call cscope_auto#remake(database)
 endfunction
 
 function! cscope_auto#switch_ignorecase()
-  let database = get(g:, 'cscope_auto_database', '')
-  return cscope_auto#remake(database)
+  if &ignorecase == get(g:, 'cscope_auto_ignorecase', &ignorecase)
+    return
+  endif
+  call cscope_auto#remake(get(g:, 'cscope_auto_database', ''))
 endfunction
