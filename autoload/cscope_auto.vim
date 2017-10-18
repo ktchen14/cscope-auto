@@ -40,13 +40,13 @@ function! cscope_auto#id_list()
 endfunction
 
 function! cscope_auto#rewire(database)
-  if exists('g:cscope_auto_id')
+  if exists('s:cscope_auto_id')
     " Use silent! in case this was killed by the user
-    silent! execute 'cscope kill' g:cscope_auto_id
-    unlet g:cscope_auto_id
-    unlet g:cscope_auto_database
-    unlet g:cscope_auto_time
-    unlet g:cscope_auto_ignorecase
+    silent! execute 'cscope kill' s:cscope_auto_id
+    unlet s:cscope_auto_id
+    unlet s:cscope_auto_database
+    unlet s:cscope_auto_time
+    unlet s:cscope_auto_ignorecase
   endif
 
   if empty(a:database) | return | endif
@@ -58,11 +58,11 @@ function! cscope_auto#rewire(database)
   execute 'cscope add' fnameescape(a:database) fnameescape(prefix) suffix
   let result = cscope_auto#id_list()
   call filter(result, 'index(before, v:val) == -1')
-  let g:cscope_auto_id = result[0]
+  let s:cscope_auto_id = result[0]
 
-  let g:cscope_auto_database = a:database
-  let g:cscope_auto_time = getftime(a:database)
-  let g:cscope_auto_ignorecase = &ignorecase
+  let s:cscope_auto_database = a:database
+  let s:cscope_auto_time = getftime(a:database)
+  let s:cscope_auto_ignorecase = &ignorecase
 endfunction
 
 function! cscope_auto#switch_buffer(number)
@@ -75,24 +75,24 @@ function! cscope_auto#switch_buffer(number)
   endif
 
   let database = cscope_auto#locate_database(path)
-  if database ==# get(g:, 'cscope_auto_database', '')
+  if database ==# get(s:, 'cscope_auto_database', '')
     return
   endif
   call cscope_auto#rewire(database)
 endfunction
 
 function! cscope_auto#retime()
-  if !exists('g:cscope_auto_id') | return | endif
-  if getftime(g:cscope_auto_database) <= g:cscope_auto_time
+  if !exists('s:cscope_auto_id') | return | endif
+  if getftime(s:cscope_auto_database) <= s:cscope_auto_time
     return
   endif
-  call cscope_auto#rewire(g:cscope_auto_database)
+  call cscope_auto#rewire(s:cscope_auto_database)
 endfunction
 
 function! cscope_auto#switch_ignorecase()
-  if !exists('g:cscope_auto_id') | return | endif
-  if &ignorecase == g:cscope_auto_ignorecase
+  if !exists('s:cscope_auto_id') | return | endif
+  if &ignorecase == s:cscope_auto_ignorecase
     return
   endif
-  call cscope_auto#rewire(g:cscope_auto_database)
+  call cscope_auto#rewire(s:cscope_auto_database)
 endfunction
