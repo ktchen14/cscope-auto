@@ -5,8 +5,9 @@ if exists('g:loaded_cscope_auto')
 endif
 let g:loaded_cscope_auto = 1
 
-autocmd VimEnter * call cscope_auto#switch_buffer(bufnr('%'))
-autocmd BufEnter * call cscope_auto#switch_buffer(+expand('<abuf>'))
+" BufEnter fires *after* entering a buffer so bufnr('%') should be the same as
+" +expand('<abuf>')
+autocmd VimEnter,BufEnter * call cscope_auto#switch_buffer(bufnr('%'))
 
 " The buffer file can change without a BufEnter from the :file or :saveas
 " commands. We can detect this with BufFilePost (though this event will fire
