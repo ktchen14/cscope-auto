@@ -8,6 +8,16 @@ let g:loaded_cscope_auto = 1
 autocmd VimEnter * call cscope_auto#switch_buffer(bufnr('%'))
 autocmd BufEnter * call cscope_auto#switch_buffer(+expand('<abuf>'))
 
+" The buffer file can change without a BufEnter from the :file or :saveas
+" commands. We can detect this with BufFilePost (though this event will fire
+" whether or not the buffer name actually changes).
+autocmd BufFilePost * call cscope_auto#switch_buffer(+expand('<abuf>'))
+
+" The buffer file can change without a BufEnter or BufFilePost when saving an
+" unnamed buffer. We can detect this with BufWritePost (though this event will
+" fire whether or not the buffer name actually changes).
+autocmd BufWritePost * call cscope_auto#switch_buffer(+expand('<abuf>'))
+
 if exists('##DirChanged')
   autocmd DirChanged * call cscope_auto#switch_buffer(bufnr('%'))
 endif
