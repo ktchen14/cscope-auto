@@ -27,4 +27,7 @@ autocmd QuickFixCmdPre cscope call cscope_auto#retime()
 " the quickfix window is populated (before the BufReadPost quickfix).
 autocmd QuickFixCmdPost cscope call cscope_auto#cd('.')
 
-autocmd OptionSet ignorecase call cscope_auto#switch_ignorecase()
+" OptionSet was introduced in Vim 7.4.786
+if exists('#OptionSet')
+  autocmd OptionSet ignorecase call cscope_auto#switch_ignorecase()
+endif
