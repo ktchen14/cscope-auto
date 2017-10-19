@@ -39,6 +39,6 @@ autocmd QuickFixCmdPre cscope call cscope_auto#retime()
 autocmd QuickFixCmdPost cscope call cscope_auto#cd('.')
 
 " OptionSet was introduced in Vim 7.4.786
-if exists('#OptionSet')
+if exists('##OptionSet')
   autocmd OptionSet ignorecase call cscope_auto#switch_ignorecase()
 endif
