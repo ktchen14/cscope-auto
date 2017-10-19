@@ -1,7 +1,5 @@
 " Maintainer: Kaiting Chen <ktchen14@gmail.com>
 
-let s:database_name = get(g:, 'cscope_auto_database_name', 'cscope.out')
-
 let s:dirsep = fnamemodify(getcwd(), ':p')[-1:]
 
 " Return the nearest cscope database to the path by walking up the directory
@@ -12,9 +10,10 @@ let s:dirsep = fnamemodify(getcwd(), ':p')[-1:]
 " &suffixesadd.
 function! cscope_auto#locate_database(path)
   let path = fnamemodify(a:path, ':p:h')
+  let database_name = get(g:, 'cscope_auto_database_name', 'cscope.out')
 
   while !exists('last') || path !=# last
-    let file = substitute(path, s:dirsep . '\?$', s:dirsep . s:database_name, '')
+    let file = substitute(path, s:dirsep . '\?$', s:dirsep . database_name, '')
     if filereadable(file)
       return file
     endif
