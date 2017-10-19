@@ -7,6 +7,9 @@ let s:dirsep = fnamemodify(getcwd(), ':p')[-1:]
 " Return the nearest cscope database to the path by walking up the directory
 " tree and looking for a file named according to cscope_auto_database_name. If
 " there is no matching cscope database then return an empty string.
+"
+" Consider just using findfile() if we can find a way to easily work around
+" &suffixesadd.
 function! cscope_auto#locate_database(path)
   let path = fnamemodify(a:path, ':p:h')
 
