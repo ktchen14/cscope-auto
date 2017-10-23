@@ -7,7 +7,7 @@ This plugin is only available if Vim is compiled with |+cscope| support.
 ==============================================================================
 						*cscope-auto*
 
-cscope-auto ensures that a single cscope connection is available to the best
+cscope-auto ensures that a single |cscope| connection is available to the best
 cscope database for the current buffer. 
 
 						*g:cscope_auto_database_name*
