@@ -1,6 +1,6 @@
 " Maintainer: Kaiting Chen <ktchen14@gmail.com>
 
-if exists('g:loaded_cscope_auto')
+if exists('g:loaded_cscope_auto') || !has('cscope')
   finish
 endif
 let g:loaded_cscope_auto = 1

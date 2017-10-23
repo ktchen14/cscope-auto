@@ -3,6 +3,7 @@
 Author:  Kaiting Chen				*cscope-auto-author*
 License: See |cscope-auto-license|
 
+This plugin is only available if Vim is compiled with |+cscope| support.
 ==============================================================================
 						*cscope-auto*
 
