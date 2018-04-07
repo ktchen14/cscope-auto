@@ -87,6 +87,8 @@ function! cscope_auto#switch_buffer(number)
   call cscope_auto#rewire(database)
 endfunction
 
+" Rewire the cscope connection if the database's mtime is after its mtime when
+" the connection was established
 function! cscope_auto#retime()
   if !exists('s:cscope_auto_id') | return | endif
   if getftime(s:cscope_auto_database) <= s:cscope_auto_time

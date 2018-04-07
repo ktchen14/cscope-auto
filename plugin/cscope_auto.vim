@@ -26,6 +26,8 @@ augroup cscope_auto
     autocmd DirChanged * call cscope_auto#switch_buffer(bufnr('%'))
   endif
 
+  " Before each :cscope command is executed ensure that the active cscope
+  " connection is up to date
   autocmd QuickFixCmdPre cscope call cscope_auto#retime()
 
   " If the cscope database is added with an absolute prefix then any finds
