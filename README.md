@@ -8,6 +8,12 @@ cscope database for the current buffer. If your cscope databases aren't named
 let g:cscope_auto_database_name = '.cscope'
 ```
 
+Or if you have cscope databases with different names then do:
+
+```vim
+let g:cscope_auto_database_name = ['.cscope', 'cscope.out']
+```
+
 In addition cscope-auto automatically reestablishes the existing cscope
 connection when you change `&ignorecase` or when the cscope database has been
 updated.
